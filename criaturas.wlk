@@ -10,7 +10,9 @@ class Criatura{
     method poderMagico(){
         return poderMagico
     }
-
+    method perderPoderMagico(cantidad) {
+      poderMagico -= cantidad
+    }
     method esAstuta()
 
     method esFormidable(){
@@ -106,16 +108,51 @@ class Domador {
 }
 
 object hechicero {
-
   method extra(){
     return 0
   }
-
   method esExtraordinario(criatura) {
     return true
   }
   method cambio() {
     return guardian
   }
+}
 
+class Colonia{
+    const property criaturas = []
+
+    method intentarConquistar(unArea){
+        if(self.poderOfensivo() > unArea.colonia().poderDefensivo()){
+            unArea.cambiarColonia(self)
+        }
+        else{
+            criaturas.forEach({p => p.perderPoderMagico(p.poderMagico()*0.15)})
+        }
+    }
+
+    method poderOfensivo(){
+        return criaturas.sum({p => p.poderOfensivo()})
+    }
+
+}
+
+class Area {
+    var colonia = new Colonia()
+    method poderDefensivo() 
+    method cambiarColonia(coloniaNueva) {
+      colonia = coloniaNueva
+    }
+}
+
+class Castillo inherits Area{
+    override method poderDefensivo(){
+        return 200 * colonia.criaturas().count({p => p.esFormidable()})
+    }
+}
+
+class Claro inherits Area{
+    override method poderDefensivo(){
+        return 100 + colonia.poderOfensivo()
+    }
 }

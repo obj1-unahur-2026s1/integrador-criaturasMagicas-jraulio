@@ -1,9 +1,16 @@
-import example.pepita
+import criaturas.*
 
 describe "group of tests for pepita" {
+  const duende1 = new Duende(poderMagico=10, astucia=5, rol=hechicero)
+  const hada1 = new Hada (poderMagico=10, astucia=5, rol=guardian)
+  const colonia1 = new Colonia(criaturas = [hada1, duende1])
+  const castillo1 = new Castillo(colonia=colonia1)
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+  test "castillo tiene poder de:200" {
+    assert.equals(200, castillo1.poderDefensivo())
+  }
+  test "colonia1 tiene un poder ofensivo de: 310 " {
+    assert.equals(110 + 200, colonia1.poderOfensivo())
   }
 
 }
